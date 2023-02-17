@@ -1,3 +1,7 @@
 micronaut:
   application:
     name: clihttpclient
+  codec:
+    json:
+      additionalTypes:
+        - text/javascript

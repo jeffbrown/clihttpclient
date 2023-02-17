@@ -3,6 +3,7 @@ package clihttpclient;
 import io.micronaut.configuration.picocli.PicocliRunner;
 import io.micronaut.context.ApplicationContext;
 
+import jakarta.inject.Inject;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -12,17 +13,17 @@ import picocli.CommandLine.Parameters;
         mixinStandardHelpOptions = true)
 public class ClihttpclientCommand implements Runnable {
 
-    @Option(names = {"-v", "--verbose"}, description = "...")
-    boolean verbose;
+    @Option(names = {"-s", "--search"}, description = "Search Term")
+    String searchTerm;
 
     public static void main(String[] args) throws Exception {
         PicocliRunner.run(ClihttpclientCommand.class, args);
     }
 
+    @Inject
+    ItunesClient itunesClient;
     public void run() {
-        // business logic here
-        if (verbose) {
-            System.out.println("Hi!");
-        }
+        SearchResult results = itunesClient.search(searchTerm, 10);
+        results.getResults().stream().forEach(System.out::println);
     }
 }
